@@ -1,0 +1,123 @@
+# Super + key
+
+# Neorg
+super + w
+    xfce4-terminal --command "$HOME/.local/bin/neorg" --working-directory=$NEORG_HOME/main --title=Neorg
+
+super + t
+    xfce4-terminal --command "$HOME/.local/bin/neorg todo" --working-directory=$NEORG_HOME/todo --title=Neorg
+
+super + n
+    xfce4-terminal --command "$HOME/.local/bin/neorg --note" --working-directory=$NEORG_HOME/notes --title=Neorg --role=FloatNote
+
+# Terminal
+super + Return
+    wezterm
+
+super + KP_Enter
+    wezterm
+
+# Dmenu run commands
+super + d
+    dmenu_run -b -i -p "Your command is my wish" -nb "#282828" -nf "#FABD2F" -sb "#FABD2F" -sf "#282828" -fn "JetBrainsMono Nerd Font:pixelsize=16"
+
+# Rofi Appfinder
+super + space
+    rofi -m -1 -modi drun -show drun -line padding 4 -hide-scrollbar -show-icons
+
+# File Manager
+super + e
+    thunar
+
+# Web Browsers
+super + i
+    google-chrome-stable
+
+# Email client
+super + m
+    thunderbird
+
+# Pavucontrol
+super + v
+    pavucontrol
+
+# Bluetooth
+super + b
+    blueman-manager
+
+
+# Super + Shift + key
+
+# Web Browsers
+super + shift + i
+    firefox
+
+# Reload sxhkd:
+super + shift + s
+    pkill -USR1 -x sxhkd
+
+
+# Super + Ctrl + key
+
+# Wifi & Power management scripts
+super + ctrl + w
+    $HOME/.config/rofi/scripts/rofi_wifi.sh
+
+super + ctrl + p
+    $HOME/.config/rofi/scripts/rofi_power.sh
+
+
+# Super + Alt + key
+
+# Lock machine
+super + alt + x
+    betterlockscreen -l
+
+
+# Ctrl + Alt + key
+
+# Terminal
+ctrl + alt + t
+    wezterm
+
+ctrl + alt + Return
+    wezterm
+
+
+# FN Keys
+
+# Brightness up
+XF86MonBrightnessUp
+    brightnessctl s 5%+
+
+# Brightness down
+XF86MonBrightnessDown
+    brightnessctl s 5%-
+
+# Raises volume
+XF86AudioRaiseVolume
+    amixer set Master 5%+
+
+# Lowers volume
+XF86AudioLowerVolume
+    amixer set Master 5%-
+
+# Mute volume
+XF86AudioMute
+    amixer set Master toggle
+
+# Play
+XF86AudioPlay
+    playerctl play-pause
+
+# Next
+XF86AudioNext
+    playerctl next
+
+# Previous
+XF86AudioPrev
+    playerctl previous
+
+# Stop
+XF86AudioStop
+    playerctl stop
