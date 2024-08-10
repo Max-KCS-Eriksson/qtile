@@ -17,6 +17,10 @@ super + Return
 super + KP_Enter
     wezterm
 
+# Notifications
+super + BackSpace
+    dunstctl close
+
 # Dmenu run commands
 super + d
     dmenu_run -b -i -p "Your command is my wish" -nb "#282828" -nf "#FABD2F" -sb "#FABD2F" -sf "#282828" -fn "JetBrainsMono Nerd Font:pixelsize=16"
