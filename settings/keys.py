@@ -19,6 +19,7 @@ END = "end"
 TAB = "Tab"
 SPACE = "space"
 ESC = "Escape"
+RETURN = "Return"
 
 
 def init_keybindings(groups):
