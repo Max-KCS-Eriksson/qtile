@@ -41,7 +41,7 @@ class MyPomodoro(ThreadPoolText):
 
     @expose_command
     def start(self):
-        if not self.is_active and not self.is_paused or self.is_timeup:
+        if not self.is_active or self.is_timeup:
             self.is_active = True
             self.is_timeup = False
             self.state_time_end = datetime.now() + timedelta(minutes=25)
