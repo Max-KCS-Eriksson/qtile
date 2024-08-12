@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from libqtile.command.base import expose_command
 from libqtile.widget.base import ThreadPoolText
 
 
@@ -12,15 +13,22 @@ class MyPomodoro(ThreadPoolText):
         super().__init__("", **config)
         self.add_defaults(MyPomodoro.defaults)
 
-        self.state_time_end = datetime.now() + timedelta(minutes=25)
+        self.is_active = False
+        self.is_paused = False
+        self.is_timeup = False
 
     def poll(self):
-        time_now = datetime.now()
-        state_time_remaining = self.state_time_end - time_now
+        if not self.is_active:
+            return "POMODORO"
 
-        if self.state_time_end > time_now:
-            text = self._format_time(state_time_remaining)
+        time_now = datetime.now()
+        if self.is_paused:
+            text = "Paused  "
+        elif self.state_time_end > time_now:
+            self.state_time_left = self.state_time_end - time_now
+            text = self._format_time(self.state_time_left)
         else:
+            self.is_timeup = True
             text = "Time Up "
         return text
 
@@ -30,3 +38,22 @@ class MyPomodoro(ThreadPoolText):
             time.seconds % 3600 // 60,
             time.seconds % 60,
         )
+
+    @expose_command
+    def start(self):
+        if not self.is_active and not self.is_paused or self.is_timeup:
+            self.is_active = True
+            self.is_timeup = False
+            self.state_time_end = datetime.now() + timedelta(minutes=25)
+            self.state_time_left = self.state_time_end
+        else:
+            self._toggle_pause()
+
+    def _toggle_pause(self):
+        if not self.is_paused:
+            self.is_paused = True
+        else:
+            self.is_paused = False
+            self.state_time_end = datetime.now() + timedelta(
+                seconds=self.state_time_left.seconds
+            )
