@@ -5,8 +5,15 @@ from libqtile.widget.base import ThreadPoolText
 
 
 class MyPomodoro(ThreadPoolText):
-    defaults = []
+    defaults = [
+        ("minutes_focus", 25, "Focus session length in minutes"),
+    ]
     UPDATE_INTERVAL_SECONDS = 1
+
+    NUM_POMODOROS = 4
+    STATE_FOCUS = "focus"
+    STATE_SHORT_BREAK = "short_break"
+    STATE_LONG_BREAK = "long_break"
 
     def __init__(self, **config):
         config["update_interval"] = MyPomodoro.UPDATE_INTERVAL_SECONDS  # Force apply
@@ -16,6 +23,9 @@ class MyPomodoro(ThreadPoolText):
         self.is_active = False
         self.is_paused = False
         self.is_timeup = False
+
+        self.completed_pomodoros = 0
+        self.state = MyPomodoro.STATE_FOCUS
 
     def poll(self):
         if not self.is_active:
@@ -42,12 +52,29 @@ class MyPomodoro(ThreadPoolText):
     @expose_command
     def start(self):
         if not self.is_active or self.is_timeup:
+            self._determine_upcoming_state()
             self.is_active = True
             self.is_timeup = False
-            self.state_time_end = datetime.now() + timedelta(minutes=25)
-            self.state_time_left = self.state_time_end
         else:
             self._toggle_pause()
+
+    def _determine_upcoming_state(self):
+        if not self.is_active or self.state != MyPomodoro.STATE_FOCUS:
+            self.state = MyPomodoro.STATE_FOCUS
+            self.state_time_end = datetime.now() + timedelta(minutes=self.minutes_focus)
+        else:
+            self.completed_pomodoros += 1
+            if self.completed_pomodoros % MyPomodoro.NUM_POMODOROS != 0:
+                self.state = MyPomodoro.STATE_SHORT_BREAK
+                self.state_time_end = datetime.now() + timedelta(
+                    minutes=self.minutes_focus / 5  # Pomodoro technique pattern
+                )
+            else:
+                self.state = MyPomodoro.STATE_LONG_BREAK
+                self.state_time_end = datetime.now() + timedelta(
+                    minutes=self.minutes_focus / 5 * 3  # Pomodoro technique pattern
+                )
+        self.state_time_left = self.state_time_end
 
     def _toggle_pause(self):
         if not self.is_paused:
