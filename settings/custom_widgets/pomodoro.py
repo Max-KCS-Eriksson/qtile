@@ -7,6 +7,17 @@ from libqtile.widget.base import ThreadPoolText
 class MyPomodoro(ThreadPoolText):
     defaults = [
         ("minutes_focus", 25, "Focus session length in minutes"),
+        ("text_initial", "POMODORO", "Text as a reminder to start using the timer"),
+        ("text_paused", "Paused  ", "Text when timer is paused"),
+        ("text_timeup", "Time Up ", "Text when time is up"),
+        ("prefix_inactive", "", "Prefix before any use, is paused or time is up"),
+        ("prefix_focus", "", "Prefix when in focus state"),
+        ("prefix_short_break", "", "Prefix when in short break state"),
+        ("prefix_long_break", "", "Prefix when in long break state"),
+        ("color_inactive", "#FF0000", "Color of `text_initial`"),
+        ("color_focus", "#00FF00", "Color of text when in focus state"),
+        ("color_short_break", "#0000FF", "Color of text when in short break state"),
+        ("color_long_break", "#0000FF", "Color of text when in long break state"),
     ]
     UPDATE_INTERVAL_SECONDS = 1
 
@@ -27,20 +38,42 @@ class MyPomodoro(ThreadPoolText):
         self.completed_pomodoros = 0
         self.state = MyPomodoro.STATE_FOCUS
 
+        self.color = {
+            "inactive": self.color_inactive,
+            MyPomodoro.STATE_FOCUS: self.color_focus,
+            MyPomodoro.STATE_SHORT_BREAK: self.color_short_break,
+            MyPomodoro.STATE_LONG_BREAK: self.color_long_break,
+        }
+        self.prefix = {
+            "inactive": self.prefix_inactive,
+            MyPomodoro.STATE_FOCUS: self.prefix_focus,
+            MyPomodoro.STATE_SHORT_BREAK: self.prefix_short_break,
+            MyPomodoro.STATE_LONG_BREAK: self.prefix_long_break,
+        }
+
     def poll(self):
         if not self.is_active:
-            return "POMODORO"
+            self.foreground = self.color["inactive"]
+            prefix = self.prefix["inactive"]
+            text = self.text_initial
+            return self._format_text(prefix, text)
 
         time_now = datetime.now()
         if self.is_paused:
-            text = "Paused  "
+            self.foreground = self.color["inactive"]
+            prefix = self.prefix["inactive"]
+            text = self.text_paused
         elif self.state_time_end > time_now:
             self.state_time_left = self.state_time_end - time_now
+            self.foreground = self.color[self.state]
+            prefix = self.prefix[self.state]
             text = self._format_time(self.state_time_left)
         else:
             self.is_timeup = True
-            text = "Time Up "
-        return text
+            self.foreground = self.color["inactive"]
+            prefix = self.prefix["inactive"]
+            text = self.text_timeup
+        return self._format_text(prefix, text)
 
     def _format_time(self, time: timedelta) -> str:
         return "%02d:%02d:%02d" % (
@@ -48,6 +81,9 @@ class MyPomodoro(ThreadPoolText):
             time.seconds % 3600 // 60,
             time.seconds % 60,
         )
+
+    def _format_text(self, prefix, text):
+        return f"{prefix}{text}"
 
     @expose_command
     def start(self):
