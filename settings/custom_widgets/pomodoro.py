@@ -20,6 +20,18 @@ class MyPomodoro(ThreadPoolText):
         ("color_short_break", "#0000FF", "Color of text when in short break state"),
         ("color_long_break", "#0000FF", "Color of text when in long break state"),
         ("notification", True, "Enable notifications when time is up"),
+        ("fmt_inactive", "<b>{}</b>", "Format text, using markup, when inactive"),
+        ("fmt_focus", "", "Format text, using markup, when in focus state"),
+        (
+            "fmt_short_break",
+            "<i>{}</i>",
+            "Format text, using markup, when in short break state",
+        ),
+        (
+            "fmt_long_break",
+            "<i>{}</i>",
+            "Format text, using markup, when in long break state",
+        ),
     ]
     UPDATE_INTERVAL_SECONDS = 1
 
@@ -52,10 +64,17 @@ class MyPomodoro(ThreadPoolText):
             MyPomodoro.STATE_SHORT_BREAK: self.prefix_short_break,
             MyPomodoro.STATE_LONG_BREAK: self.prefix_long_break,
         }
+        self.format = {
+            "inactive": self.fmt_inactive,
+            MyPomodoro.STATE_FOCUS: self.fmt_focus,
+            MyPomodoro.STATE_SHORT_BREAK: self.fmt_short_break,
+            MyPomodoro.STATE_LONG_BREAK: self.fmt_long_break,
+        }
 
     def poll(self):
         if not self.is_active:
             self.foreground = self.color["inactive"]
+            self.fmt = self.format["inactive"]
             prefix = self.prefix["inactive"]
             text = self.text_initial
             return self._format_text(prefix, text)
@@ -63,17 +82,20 @@ class MyPomodoro(ThreadPoolText):
         time_now = datetime.now()
         if self.is_paused:
             self.foreground = self.color["inactive"]
+            self.fmt = self.format["inactive"]
             prefix = self.prefix["inactive"]
             text = self.text_paused
         elif self.state_time_end > time_now:
             self.state_time_left = self.state_time_end - time_now
             self.foreground = self.color[self.state]
+            self.fmt = self.format[self.state]
             prefix = self.prefix[self.state]
             text = self._format_time(self.state_time_left)
         else:
             self._send_notification(self.text_timeup)
             self.is_timeup = True
             self.foreground = self.color["inactive"]
+            self.fmt = self.format["inactive"]
             prefix = self.prefix["inactive"]
             text = self.text_timeup
         return self._format_text(prefix, text)
