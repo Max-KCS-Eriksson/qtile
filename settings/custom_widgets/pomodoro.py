@@ -1,3 +1,4 @@
+import subprocess
 from datetime import datetime, timedelta
 
 from libqtile.command.base import expose_command
@@ -18,6 +19,7 @@ class MyPomodoro(ThreadPoolText):
         ("color_focus", "#00FF00", "Color of text when in focus state"),
         ("color_short_break", "#0000FF", "Color of text when in short break state"),
         ("color_long_break", "#0000FF", "Color of text when in long break state"),
+        ("notification", True, "Enable notifications when time is up"),
     ]
     UPDATE_INTERVAL_SECONDS = 1
 
@@ -69,6 +71,7 @@ class MyPomodoro(ThreadPoolText):
             prefix = self.prefix[self.state]
             text = self._format_time(self.state_time_left)
         else:
+            self._send_notification(self.text_timeup)
             self.is_timeup = True
             self.foreground = self.color["inactive"]
             prefix = self.prefix["inactive"]
@@ -91,6 +94,8 @@ class MyPomodoro(ThreadPoolText):
             self._determine_upcoming_state()
             self.is_active = True
             self.is_timeup = False
+            self._close_notification()
+            self.notify_timup = True  # Re-enable notification
         else:
             self._toggle_pause()
 
@@ -115,8 +120,30 @@ class MyPomodoro(ThreadPoolText):
     def _toggle_pause(self):
         if not self.is_paused:
             self.is_paused = True
+            self._send_notification(self.text_paused)
+            self.notify_timup = True  # Notify when countdown is up or paused again
         else:
             self.is_paused = False
             self.state_time_end = datetime.now() + timedelta(
                 seconds=self.state_time_left.seconds
             )
+            self._close_notification()
+
+    def _send_notification(self, message):
+        """Requires `dunst` installed on system"""
+        if not self.notification:
+            return
+        if self.notify_timup:
+            title = "Pomodoro"
+            text = f"{self.state.replace('_', ' ').title()}: {message}"
+            urgency = "critical"
+            subprocess.run(
+                ["dunstify", title, text, f"--urgency={urgency}"], shell=False
+            )
+        self.notify_timup = False  # Prevent spamming notifications from `.poll()`
+
+    def _close_notification(self):
+        """Requires `dunst` installed on system"""
+        if not self.notification:
+            return
+        subprocess.run(["dunstctl", "close"], shell=False)
