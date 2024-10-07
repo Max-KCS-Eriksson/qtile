@@ -10,6 +10,7 @@ from .custom_widgets.cpu_icon import MyCpuIcon
 from .custom_widgets.df_icon import MyDfIcon
 from .custom_widgets.groupbox import MyGroupBox
 from .custom_widgets.memory_icon import MyMemoryIcon
+from .custom_widgets.pomodoro import MyPomodoro
 from .custom_widgets.volume import MyVolume
 from .custom_widgets.volume_icon import MyVolumeIcon
 from .webpage_monitor import webpage_monitor
@@ -128,6 +129,26 @@ def get_current_layout():
 
 
 caps_num_lock_indicator = widget.CapsNumLockIndicator(**icon_defaults)
+
+POMODORO = custom_widgets.pomodoro.MyPomodoro(
+    # minutes_focus=0.2,  # FIX: For demo only. Use default
+    notification=True,
+    prefix_inactive="  ",  #     
+    prefix_focus="  ",  #   
+    prefix_short_break="  ",  # 
+    prefix_long_break="  ",  # 
+    color_inactive=COLORS["red"][1],
+    color_focus=COLORS["purple"][1],
+    color_short_break=COLORS["green"][1],
+    color_long_break=COLORS["green"][1],
+    markup=True,
+    fmt_inactive="<b>{}</b>",
+    fmt_focus="{}",
+    fmt_short_break="<b>{}</b>",
+    fmt_long_break="<b>{}</b>",
+    padding=5,
+    **text_defaults,
+)
 
 webpage_monitor_icon = widget.TextBox(  # Poll / Script Icon
     text="",  # Font Awesome -  
