@@ -25,6 +25,8 @@ def init_main_bar():
         widgets.get_current_layout_icon(),
         widgets.get_current_layout(),
         widgets.sep,
+        widgets.POMODORO,
+        widgets.sep,
         widgets.webpage_monitor_icon,
         widgets.webpage_monitor_widget,
         # Center
