@@ -40,6 +40,7 @@ def init_keybindings(groups):
         # Meta + Ctrl + key
         Key([META, CTRL], "r", lazy.reload_config()),
         # Meta + Alt + key
+        Key([META, ALT], RETURN, lazy.widget["mypomodoro"].start()),
     ]
 
     window_keys = [
