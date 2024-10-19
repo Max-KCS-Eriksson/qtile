@@ -127,6 +127,7 @@ def assign_app_group(client):
         "gimp-2.10": RELAX,
         "gl": RELAX,
         "insomnia": LAB,
+        "jetbrains-idea": LAB,
         "libreoffice-calc": MAIL,
         "mail": MAIL,
         "mpv": RELAX,
