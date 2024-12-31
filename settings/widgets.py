@@ -6,6 +6,7 @@ from libqtile import bar, widget
 from . import color_theme, custom_widgets
 from .custom_widgets.backlight import MyBacklight
 from .custom_widgets.backlight_icon import MyBacklightIcon
+from .custom_widgets.clock import MyClock
 from .custom_widgets.cpu_icon import MyCpuIcon
 from .custom_widgets.df_icon import MyDfIcon
 from .custom_widgets.groupbox import MyGroupBox
@@ -185,7 +186,7 @@ def get_week_number():
 
 
 def get_time():
-    return widget.Clock(  # Time
+    return MyClock(  # Time
         format="%H:%M:%S",
         fontsize=FONT_SIZE,
         font=FONT,
