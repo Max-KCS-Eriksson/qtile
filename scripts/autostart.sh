@@ -24,3 +24,5 @@ run sxhkd -c ~/.config/qtile/sxhkd/sxhkdrc &
 run nm-applet &
 blueman-applet &
 rfkill block bluetooth &
+
+wezterm &
