@@ -13,6 +13,7 @@ fi
 # Wallpaper
 
 feh --no-fehbg --bg-fill ~/.config/backgrounds/gruvbox_mojave.jpg &
+betterlockscreen --update ~/Pictures/memes/bun_don_babylon_penguin_shadow_darker.jpg &
 
 # Start sxhkd to replace Qtile native key-bindings
 
