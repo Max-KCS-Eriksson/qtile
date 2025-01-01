@@ -206,7 +206,7 @@ def get_date():
 
 
 memory_icon = widget.TextBox(  # Memory Icon
-    text="",  # Nerd Font
+    text="",  # Nerd Font  
     padding=10,
     font="JetBrainsMono Nerd Font",
     fontsize=ICON_SIZE,
