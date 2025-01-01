@@ -23,7 +23,7 @@ super + BackSpace
 
 # Dmenu run commands
 super + d
-    dmenu_run -b -i -p "Your command is my wish" -nb "#282828" -nf "#FABD2F" -sb "#FABD2F" -sf "#282828" -fn "JetBrainsMono Nerd Font:pixelsize=16"
+    dmenu_run -b -i -p "Your command is my wish" -nb "#282828" -nf "#FE8019" -sb "#FE8019" -sf "#282828" -fn "JetBrainsMono Nerd Font:pixelsize=18"
 
 # Rofi Appfinder
 super + space
