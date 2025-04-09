@@ -76,26 +76,27 @@ def _send_client_to_group(client, group):
 
 
 def _assign_client_to_default_group(client, **kwargs):
-    wm_class_default_group = kwargs["wm_class_default_group"]
-    wm_name_default_group = kwargs["wm_name_default_group"]
-    excluded_wm_roles = kwargs["excluded_wm_roles"]
+    wm_class_default_group: dict = kwargs["wm_class_default_group"]
+    wm_name_default_group: dict = kwargs["wm_name_default_group"]
+    excluded_wm_roles: dict = kwargs["excluded_wm_roles"]
 
     # Find out if client has a default group specified or it is to be excluded.
     group = None  # Assume client has no default group
 
-    wm_class = client.get_wm_class()[0].lower()
-    if wm_class in wm_class_default_group:
-        group = wm_class_default_group[wm_class]
+    wm_class: str = client.get_wm_class()[0].lower()
+    if wm_class in {"telegram-desktop", "steamwebhelper"}:
         # HACK: Telegram and Steam get caught in below check for wm_role, so send them
         # to the correct group immediately.
-        if wm_class in {"telegram-desktop", "steamwebhelper"}:
-            _send_client_to_group(client, group)
+        _send_client_to_group(client, group)
+    for key in wm_class_default_group.keys():
+        if wm_class.startswith(key):  # wm_class might have version suffix
+            group = wm_class_default_group[key]
 
-    wm_name = client.name.lower()
+    wm_name: str = client.name.lower()
     if wm_name in wm_name_default_group:
         group = wm_name_default_group[wm_name]
 
-    wm_role = client.get_wm_role() is not None and client.get_wm_role().lower()
+    wm_role: str = client.get_wm_role() is not None and client.get_wm_role().lower()
     # wm_role = client.get_wm_role().lower()
     if wm_role in excluded_wm_roles:
         return
@@ -124,13 +125,13 @@ def assign_app_group(client):
     wm_class_default_group = {
         "discord": MAIL,
         "gimp": RELAX,
-        "gimp-2.10": RELAX,
         "gl": RELAX,
         "insomnia": LAB,
         "jetbrains-idea": LAB,
         "libreoffice-calc": MAIL,
         "mail": MAIL,
         "mpv": RELAX,
+        "obs": RELAX,
         "steam": RELAX,
         "steamwebhelper": RELAX,
         "telegram-desktop": MAIL,
