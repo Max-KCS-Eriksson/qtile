@@ -25,7 +25,7 @@ def init_groups():
             # name="3",
             name="misc",
             layout="monadtall",
-            label="",  #   
+            label="",  #     
             layout_opts=None,  # Options to pass to a layout.
             screen_affinity=None,  # Preference to start on specific screen.
             spawn=None,
