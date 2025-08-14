@@ -117,7 +117,8 @@ def get_current_screen_indicator():
 
 
 def get_current_layout_icon():
-    return widget.CurrentLayoutIcon(
+    return widget.CurrentLayout(
+        mode="icon",
         scale=0.5,
         use_mask=True,
         padding=5,
@@ -132,7 +133,6 @@ def get_current_layout():
 caps_num_lock_indicator = widget.CapsNumLockIndicator(**icon_defaults)
 
 POMODORO = custom_widgets.pomodoro.MyPomodoro(
-    # minutes_focus=0.2,  # FIX: For demo only. Use default
     notification=True,
     prefix_inactive="  ",  #     
     prefix_focus="  ",  #   

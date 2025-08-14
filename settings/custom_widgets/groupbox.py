@@ -37,7 +37,7 @@ class MyGroupBox(widget.GroupBox):
     def draw(self):
         self.drawer.clear(self.background or self.bar.background)
 
-        offset = self.margin_x
+        offsetx = self.margin_x
         for i, g in enumerate(self.groups):
             to_highlight = False
             is_block = self.highlight_method == "block"
@@ -94,7 +94,7 @@ class MyGroupBox(widget.GroupBox):
                 border = None
 
             self.drawbox(
-                offset,
+                offsetx,
                 g.label,
                 border,
                 text_color,
@@ -105,5 +105,5 @@ class MyGroupBox(widget.GroupBox):
                 line=is_line,
                 highlighted=to_highlight,
             )
-            offset += bw + self.spacing
-        self.drawer.draw(offsetx=self.offset, offsety=self.offsety, width=self.width)
+            offsetx += bw + self.spacing
+        self.drawer.draw(offsetx=self.offsetx, offsety=self.offsety, width=self.width)
