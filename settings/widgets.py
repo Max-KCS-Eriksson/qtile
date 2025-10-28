@@ -2,6 +2,7 @@ import subprocess
 from pathlib import Path
 
 from libqtile import bar, widget
+from libqtile.lazy import lazy
 
 from . import color_theme, custom_widgets
 from .custom_widgets.backlight import MyBacklight
@@ -148,6 +149,9 @@ POMODORO = custom_widgets.pomodoro.MyPomodoro(
     fmt_short_break="<b>{}</b>",
     fmt_long_break="<b>{}</b>",
     padding=5,
+    mouse_callbacks={
+        "Button1": lazy.widget["mypomodoro"].start(),  # Left click
+    },
     **text_defaults,
 )
 
