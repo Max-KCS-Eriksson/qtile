@@ -7,7 +7,10 @@ function run {
 }
 
 if [[ "$(xrandr | grep ' connected' | wc -l)" -gt 1 ]]; then
+    setxkbmap -layout us -variant altgr-intl -option nodeadkeys
     xrandr --output eDP-1 --scale 0.7
+else
+    setxkbmap se nodeadkeys
 fi
 
 # Wallpaper
