@@ -6,7 +6,7 @@ function run {
     fi
 }
 
-if [[ "$(xrandr | grep -c ' connected ')" -gt 1 ]]; then
+if [[ "$(xrandr | grep ' connected' | wc -l)" -gt 1 ]]; then
     xrandr --output eDP-1 --scale 0.7
 fi
 
