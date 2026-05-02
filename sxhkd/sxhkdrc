@@ -92,23 +92,23 @@ ctrl + alt + Return
 
 # Brightness up
 XF86MonBrightnessUp
-    brightnessctl s 5%+
+    brightnessctl s 1%+
 
 # Brightness down
 XF86MonBrightnessDown
-    brightnessctl s 5%-
+    brightnessctl s 1%-
 
 # Raises volume
 XF86AudioRaiseVolume
-    amixer set Master 5%+
+    ~/.config/qtile/scripts/volume-control.sh up 1
 
 # Lowers volume
 XF86AudioLowerVolume
-    amixer set Master 5%-
+    ~/.config/qtile/scripts/volume-control.sh down 1
 
 # Mute volume
 XF86AudioMute
-    amixer set Master toggle
+    ~/.config/qtile/scripts/volume-control.sh mute
 
 # Play
 XF86AudioPlay
