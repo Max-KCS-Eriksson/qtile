@@ -12,17 +12,17 @@ super + n
 
 # Terminal
 super + Return
-    wezterm
+    $HOME/.config/wezterm/scripts/wezterm-in-cwd.sh
 
 super + KP_Enter
-    wezterm
+    $HOME/.config/wezterm/scripts/wezterm-in-cwd.sh
 
 # Notifications
 super + BackSpace
     dunstctl close
 
 # Dmenu run commands
-super + d
+super + r
     dmenu_run -b -i -p "Your command is my wish" -nb "#282828" -nf "#FE8019" -sb "#FE8019" -sf "#282828" -fn "JetBrainsMono Nerd Font:pixelsize=18"
 
 # Rofi Appfinder
@@ -74,7 +74,7 @@ super + ctrl + p
 # Super + Alt + key
 
 # Lock machine
-super + alt + x
+super + alt + l
     betterlockscreen -l
 
 
@@ -82,10 +82,10 @@ super + alt + x
 
 # Terminal
 ctrl + alt + t
-    wezterm
+    $HOME/.config/wezterm/scripts/wezterm-in-cwd.sh
 
 ctrl + alt + Return
-    wezterm
+    $HOME/.config/wezterm/scripts/wezterm-in-cwd.sh
 
 
 # FN Keys
