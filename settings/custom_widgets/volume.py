@@ -3,8 +3,9 @@ from libqtile import widget
 
 class MyVolume(widget.Volume):
     """
-    PulseAudio volume widget using `pactl`.
-    Doesn't rely on additional dependencies unlike the built in `PulseVolume` widget.
+    Backend-agnostic volume widget using the shared volume-control script.
+    It prefers PulseAudio/PipeWire when available, but falls back to ALSA
+    controls so the bar still works on machines without a running audio daemon.
 
     Mouse callbacks inherited from widget.Volume:
     - Button1: mute
@@ -15,8 +16,8 @@ class MyVolume(widget.Volume):
 
     def __init__(self, **kwargs):
         volume_control = "~/.config/qtile/scripts/volume-control.sh"
-        kwargs.setdefault("get_volume_command", "pactl get-sink-volume @DEFAULT_SINK@")
-        kwargs.setdefault("check_mute_command", "pactl get-sink-mute @DEFAULT_SINK@")
+        kwargs.setdefault("get_volume_command", f"{volume_control} volume")
+        kwargs.setdefault("check_mute_command", f"{volume_control} status")
         kwargs.setdefault("check_mute_string", "yes")
         kwargs.setdefault("mute_command", f"{volume_control} mute")
         kwargs.setdefault("volume_up_command", f"{volume_control} up 5")
